@@ -1,9 +1,22 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 class Homepage extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {}
   render() {
-    return <div> this Component is private</div>;
+    return <div> WELCOME {this.props.user.email} </div>;
   }
 }
-
-export default Homepage;
+const mapStateToProps = state => {
+  return {
+    user: state.userReducer.user
+  };
+};
+export default connect(
+  mapStateToProps,
+  {}
+)(Homepage);

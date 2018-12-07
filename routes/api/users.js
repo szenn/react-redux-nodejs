@@ -10,7 +10,8 @@ const {
 
 signToken = user => {
   return jwt.sign({
-      sub: user.id
+      id: user.id,
+      email: user.email
     },
     JWT_SECRET
   );
@@ -44,7 +45,7 @@ router.post("/signin", (req, res, next) => {
           const token = signToken(req.user);
           return res.status(200).json({
 
-            user,
+            user: user,
             token,
             message: "Login successful"
           });
@@ -112,8 +113,10 @@ router.get(
     session: false
   }),
   (req, res) => {
+
     res.json({
-      secret: "hello"
+      id: req.user.id,
+      email: req.user.email
     });
   }
 );

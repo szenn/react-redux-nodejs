@@ -1,10 +1,25 @@
-import { createStore, applyMiddleware, compose } from "redux";
+import {
+  createStore,
+  applyMiddleware,
+  compose
+} from "redux";
 import thunk from "redux-thunk";
 import rootReducer from "./reducers/rootReducer";
+import jwt from 'jsonwebtoken';
 
 const jwtToken = localStorage.getItem("JWT_TOKEN");
+
+const decodedToken = jwt.decode(jwtToken);
+
+
+
 const initialState = {
   userReducer: {
+    user: decodedToken
+  },
+
+
+  authentication: {
     token: jwtToken,
     isAuthenticated: jwtToken ? true : false
   }
@@ -18,5 +33,8 @@ const store = createStore(
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 );
+
+
+
 
 export default store;

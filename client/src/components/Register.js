@@ -98,8 +98,8 @@ class Register extends Component {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.userReducer.isAuthenticated,
-    errorMessage: state.userReducer.errorMessage
+    isAuthenticated: state.authentication.isAuthenticated,
+    errorMessage: state.authentication.errorMessage
   };
 };
 

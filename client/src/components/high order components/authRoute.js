@@ -19,7 +19,7 @@ export default OriginalComponent => {
   }
   const mapStateToProps = state => {
     return {
-      isAuthenticated: state.userReducer.isAuthenticated
+      isAuthenticated: state.authentication.isAuthenticated
     };
   };
 

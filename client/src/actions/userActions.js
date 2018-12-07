@@ -1,4 +1,5 @@
 import axios from 'axios';
+import jwt from 'jsonwebtoken';
 
 
 
@@ -7,7 +8,8 @@ import {
     SIGN_IN,
     SIGN_OUT,
     SIGN_UP_ERROR,
-    SIGN_IN_ERROR
+    SIGN_IN_ERROR,
+    GET_USER
 
 } from './types';
 
@@ -23,12 +25,12 @@ export const registerUser = data => dispatch => {
 
             dispatch({
                 type: SIGN_UP,
-                payload: res.data.token
+                payload: res.data
             })
         ).then((res) => {
             history.push("/homepage");
-            localStorage.setItem('JWT_TOKEN', res.payload);
-            axios.defaults.headers.common['Authorization'] = res.payload;
+            localStorage.setItem('JWT_TOKEN', res.payload.token);
+            axios.defaults.headers.common['Authorization'] = res.payload.token;
         })
         .catch((err) => {
 
@@ -40,19 +42,20 @@ export const registerUser = data => dispatch => {
 
 };
 export const loginUser = data => dispatch => {
+
     axios.post('/api/users/signin', data)
         .then(res =>
             dispatch({
                 type: SIGN_IN,
-                payload: res.data.token
+                payload: res.data
 
             })
-
         ).then(res => {
             history.push("/homepage");
-            localStorage.setItem('JWT_TOKEN', res.payload);
-            axios.defaults.headers.common['Authorization'] = res.payload;
-            //redirect user to protected route
+            localStorage.setItem('JWT_TOKEN', res.payload.token);
+            axios.defaults.headers.common['Authorization'] = res.payload.token;
+            //decode token for userdetails
+            dispatch(getUser(jwt.decode(res.payload.token)));
 
         }).catch(err => {
 
@@ -62,14 +65,24 @@ export const loginUser = data => dispatch => {
             })
         });
 }
-export const logOut = () => {
-    return dispatch => {
-        localStorage.removeItem('JWT_TOKEN');
-        axios.defaults.headers.common['Authorization'] = '';
+export const logOut = () => dispatch => {
 
-        dispatch({
-            type: SIGN_OUT,
-            payload: ''
-        })
-    };
-}
+    localStorage.removeItem('JWT_TOKEN');
+    axios.defaults.headers.common['Authorization'] = '';
+
+    dispatch({
+        type: SIGN_OUT,
+        payload: ''
+    });
+
+};
+
+
+export const getUser = user => {
+    return {
+        type: GET_USER,
+        payload: user
+    }
+
+
+};

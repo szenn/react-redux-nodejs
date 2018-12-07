@@ -1,54 +1,19 @@
 import {
-  SIGN_UP,
-  SIGN_IN,
-  SIGN_OUT,
-  SIGN_UP_ERROR,
-  SIGN_IN_ERROR
-} from "../actions/types";
+  GET_USER
+} from '../actions/types';
 
 const initialstate = {
-  token: "",
-  errorMessage: "",
-  isAuthenticated: false
-};
+  user: {}
+}
 
-export default function (state = initialstate, action) {
+export default (state = initialstate, action) => {
   switch (action.type) {
-    case SIGN_UP:
-      return {
-        ...state,
-        token: action.payload,
-        isAuthenticated: true,
-        errorMessage: ""
-      };
-    case SIGN_UP_ERROR:
-      return {
-        ...state,
-        errorMessage: action.payload
-      };
+    case GET_USER:
 
-    case SIGN_IN:
-      return {
-        ...state,
-        token: action.payload,
-        isAuthenticated: true,
-        errorMessage: ""
-      };
-    case SIGN_IN_ERROR:
-      return {
-        ...state,
-        errorMessage: action.payload,
-        isAuthenticated: false
-      };
-    case SIGN_OUT:
-      return {
-        ...state,
-        token: action.payload,
-        isAuthenticated: false,
-        errorMessage: "",
+      return { ...state,
+        user: action.payload
       }
     default:
-
-      return state;
+      return state
   }
 }
