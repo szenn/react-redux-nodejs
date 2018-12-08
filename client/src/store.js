@@ -15,10 +15,8 @@ const decodedToken = jwt.decode(jwtToken);
 
 const initialState = {
   userReducer: {
-    user: decodedToken
+    user: decodedToken ? true : false
   },
-
-
   authentication: {
     token: jwtToken,
     isAuthenticated: jwtToken ? true : false
